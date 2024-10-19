@@ -25,25 +25,26 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
     vma.linkLibCpp();
-    vma.addIncludePath(.{ .path = "." });
-    vma.addIncludePath(.{ .path = b.pathJoin(&.{ vulkan_sdk, "include" }) });
-    vma.addLibraryPath(.{ .path = b.pathJoin(&.{ vulkan_sdk, "lib" }) });
+
+    vma.addIncludePath(b.path("."));
+    vma.addIncludePath(b.path(b.pathJoin(&.{ vulkan_sdk, "include" })));
+    vma.addLibraryPath(b.path(b.pathJoin(&.{ vulkan_sdk, "lib" })));
     vma.linkSystemLibrary(vulkan_lib);
     vma.addCSourceFile(.{ .file = vma_src });
 
     const vma_zig = b.addModule("vma-zig", .{
-        .root_source_file = .{ .path = "src/root.zig" },
+        .root_source_file = b.path("src/root.zig"),
         .imports = &.{
             .{ .name = "vulkan-zig", .module = vkzig.module("vulkan-zig") },
         },
     });
-    vma_zig.addLibraryPath(.{ .path = b.pathJoin(&.{ vulkan_sdk, "lib" }) });
-    vma_zig.addIncludePath(.{ .path = b.pathJoin(&.{ vulkan_sdk, "include" }) });
-    vma_zig.addIncludePath(.{ .path = "." });
+    vma_zig.addLibraryPath(b.path(b.pathJoin(&.{ vulkan_sdk, "lib" })));
+    vma_zig.addIncludePath(b.path(b.pathJoin(&.{ vulkan_sdk, "include" })));
+    vma_zig.addIncludePath(b.path("."));
     vma_zig.linkLibrary(vma);
 
     const lib_unit_tests = b.addTest(.{
-        .root_source_file = .{ .path = "src/root.zig" },
+        .root_source_file = b.path("src/root.zig"),
         .target = target,
         .optimize = optimize,
     });
