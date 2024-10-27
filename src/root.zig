@@ -1249,9 +1249,6 @@ fn vkCheck(result: c.VkResult) Error!void {
         .thread_done_khr => error.ThreadDoneKhr,
         .operation_deferred_khr => error.OperationDeferredKhr,
         .operation_not_deferred_khr => error.OperationNotDeferredKhr,
-        .error_invalid_video_std_parameters_khr => error.InvalidVideoStdParametersKhr,
-        .error_compression_exhausted_ext => error.CompressionExhaustedExt,
-        .incompatible_shader_binary_ext => error.IncompatibleShaderBinaryExt,
         .error_unknown => error.Unknown,
         else => error.Unknown,
     };
